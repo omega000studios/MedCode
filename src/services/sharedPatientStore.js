@@ -26,7 +26,18 @@ export function loadStoredPatients() {
   if (typeof window === "undefined") return cloneInitialPatients();
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
+    if (stored) {
+      const savedPatients = JSON.parse(stored);
+      const defaultsById = new Map(cloneInitialPatients().map((patient) => [patient.patientId, patient]));
+      return savedPatients.map((patient) => {
+        const defaults = defaultsById.get(patient.patientId) || {};
+        return {
+          ...defaults,
+          ...patient,
+          checkIn: { ...defaults.checkIn, ...patient.checkIn }
+        };
+      });
+    }
     const seeded = cloneInitialPatients();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
     return seeded;
@@ -93,6 +104,13 @@ export function setFastingAnswer(patientId, answer) {
     ...patient,
     fastingQuestion: { ...patient.fastingQuestion, answer }
   }), "FASTING_ANSWER_UPDATED");
+}
+
+export function updatePatientCheckIn(patientId, key, value) {
+  return updatePatient(patientId, (patient) => ({
+    ...patient,
+    checkIn: { ...patient.checkIn, [key]: value }
+  }), "PATIENT_CHECK_IN_UPDATED");
 }
 
 export function submitConsult(patientId, consult) {

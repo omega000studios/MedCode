@@ -9,6 +9,8 @@ export const initialPatients = [
   {
     patientId: "PT-84920",
     name: "Aarav Sharma",
+    age: 48,
+    gender: "Male",
     token: "B-14",
     careType: "Diabetes Care",
     currentStageIndex: 2,
@@ -16,7 +18,7 @@ export const initialPatients = [
       { name: "Check-in", status: "done", time: "09:15 AM" },
       { name: "Vitals", status: "done", time: "09:35 AM" },
       { name: "Doctor consultation", status: "current", time: "10:10 AM" },
-      { name: "Blood tests", status: "upcoming", time: null },
+      { name: "Lab tests", status: "upcoming", time: null },
       { name: "Dietitian", status: "upcoming", time: null },
       { name: "Pharmacy", status: "upcoming", time: null }
     ],
@@ -27,6 +29,15 @@ export const initialPatients = [
       actions: ["How to get there", "Listen", "I've arrived"]
     },
     estimatedWait: 12,
+    checkIn: {
+      aadhaarReady: false,
+      panReady: false,
+      fastingBeforeVitals: "",
+      recentExertion: "",
+      priorTests: "",
+      opdRestMinutes: "",
+      medicalHistory: ""
+    },
     prepChecklist: [
       { label: "Digital token B-14 is ready on this screen", done: true },
       { label: "Doctor's requisition was sent electronically", done: true }
@@ -49,6 +60,8 @@ export const initialPatients = [
   {
     patientId: "PT-39104",
     name: "Sunita Deshmukh",
+    age: 52,
+    gender: "Female",
     token: "ONC-08",
     careType: "Cancer Care",
     currentStageIndex: 1,
@@ -67,6 +80,15 @@ export const initialPatients = [
       actions: ["How to get there", "Listen", "I've arrived"]
     },
     estimatedWait: 8,
+    checkIn: {
+      aadhaarReady: false,
+      panReady: false,
+      fastingBeforeVitals: "",
+      recentExertion: "",
+      priorTests: "",
+      opdRestMinutes: "",
+      medicalHistory: ""
+    },
     prepChecklist: [
       { label: "Infusion recliner 08 is reserved", done: true },
       { label: "Cycle 4 clearance is on file", done: true }
@@ -91,6 +113,8 @@ export const initialPatients = [
   {
     patientId: "PT-61923",
     name: "Priya Patel",
+    age: 28,
+    gender: "Female",
     token: "ANC-03",
     careType: "Maternal & Child",
     currentStageIndex: 1,
@@ -109,6 +133,15 @@ export const initialPatients = [
       actions: ["How to get there", "Listen", "I've arrived"]
     },
     estimatedWait: 10,
+    checkIn: {
+      aadhaarReady: false,
+      panReady: false,
+      fastingBeforeVitals: "",
+      recentExertion: "",
+      priorTests: "",
+      opdRestMinutes: "",
+      medicalHistory: ""
+    },
     prepChecklist: [
       { label: "Drink two glasses of water before the scan", done: false },
       { label: "Ultrasound requisition was sent electronically", done: true }
@@ -138,7 +171,7 @@ export const initialPatients = [
       { name: "Check-in", status: "current", time: "10:05 AM" },
       { name: "Vitals", status: "upcoming", time: null },
       { name: "Doctor consultation", status: "upcoming", time: null },
-      { name: "Blood tests", status: "upcoming", time: null },
+      { name: "Lab tests", status: "upcoming", time: null },
       { name: "Dietitian", status: "upcoming", time: null },
       { name: "Pharmacy", status: "upcoming", time: null }
     ],
@@ -149,6 +182,15 @@ export const initialPatients = [
       actions: ["How to get there", "Listen", "I've arrived"]
     },
     estimatedWait: 18,
+    checkIn: {
+      aadhaarReady: false,
+      panReady: false,
+      fastingBeforeVitals: "",
+      recentExertion: "",
+      priorTests: "",
+      opdRestMinutes: "",
+      medicalHistory: ""
+    },
     prepChecklist: [
       { label: "Keep your ABHA card ready", done: false }
     ],

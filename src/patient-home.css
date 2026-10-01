@@ -45,6 +45,11 @@ button:focus-visible, select:focus-visible, a:focus-visible, [data-slot="accordi
 .simple-main { max-width: 1120px; margin: 0 auto; padding: 50px 28px 100px; }
 .intro-block { margin-bottom: 22px; }
 .intro-block h1 { color: #273440; font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.2; letter-spacing: -.035em; font-weight: 670; }
+.patient-summary { display: flex; align-items: stretch; gap: 0; margin: 0 0 25px; padding: 16px 20px; border: 1px solid #e3e9ee; border-radius: 16px; background: #fff; }
+.patient-summary > div { display: flex; flex: 1; min-width: 0; flex-direction: column; justify-content: center; gap: 5px; padding: 1px 20px; border-left: 1px solid #e7ecef; }
+.patient-summary > div:first-child { flex: 1.35; padding-left: 0; border-left: 0; }
+.patient-summary span { color: #6d7d89; font-size: .75rem; font-weight: 600; }
+.patient-summary strong { overflow: hidden; color: #2d3c48; font-size: .91rem; font-weight: 680; text-overflow: ellipsis; white-space: nowrap; }
 .visit-tabs { display: flex; gap: 26px; margin-bottom: 24px; border-bottom: 1px solid #dfe6eb; }
 .visit-tabs button { position: relative; padding: 0 1px 12px; border: 0; background: transparent; color: #71808d; font-size: .88rem; font-weight: 650; cursor: pointer; }
 .visit-tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: transparent; }
@@ -97,6 +102,30 @@ button:focus-visible, select:focus-visible, a:focus-visible, [data-slot="accordi
 .fasting-message.warning { padding: 14px 16px; border: 1px solid #edc6bb; border-radius: 12px; background: #fff8f6; color: #784438; }
 .fasting-message.warning p { display: flex; align-items: flex-start; gap: 8px; }
 .fasting-message.warning button { margin-top: 12px; border-color: #dca99c; color: #784438; }
+.checkin-card { margin-top: 16px; border: 1px solid #e3e9ee; border-radius: 20px; background: #fff; box-shadow: none; }
+.checkin-card [data-slot="card-content"] { padding: 26px 30px; }
+.checkin-heading, .checkin-section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.checkin-heading h3 { color: #273440; font-size: 1.08rem; font-weight: 710; letter-spacing: -.025em; }
+.checkin-heading p, .checkin-section-heading p { margin-top: 5px; color: #6e7d89; font-size: .84rem; line-height: 1.45; }
+.checkin-save-state { flex: 0 0 auto; padding: 6px 9px; border-radius: 999px; background: #f0f6f8; color: #42667a; font-size: .74rem; font-weight: 650; }
+.checkin-section { margin-top: 22px; padding-top: 19px; border-top: 1px solid #e8ecef; }
+.checkin-section h4 { margin-bottom: 12px; color: #344550; font-size: .91rem; font-weight: 700; }
+.checkin-identity-list { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.checkin-toggle { display: flex; align-items: flex-start; gap: 9px; color: #455765; font-size: .85rem; line-height: 1.45; cursor: pointer; }
+.checkin-toggle input { width: 17px; height: 17px; margin: 1px 0 0; accent-color: #2879ae; flex: 0 0 auto; }
+.checkin-help { margin-top: 10px; color: #687a88; font-size: .79rem; line-height: 1.5; }
+.checkin-field { display: flex; min-width: 0; flex-direction: column; gap: 7px; color: #405260; font-size: .82rem; font-weight: 620; }
+.checkin-field select, .checkin-field input, .checkin-field textarea { width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid #d8e0e5; border-radius: 10px; background: #fff; color: #344550; font: inherit; font-size: .84rem; }
+.checkin-field textarea { min-height: 66px; resize: vertical; line-height: 1.45; }
+.checkin-field input::placeholder, .checkin-field textarea::placeholder { color: #87949e; font-weight: 400; }
+.checkin-vitals-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 20px; margin-top: 14px; }
+.coverage-section .checkin-section-heading { align-items: center; }
+.coverage-section .checkin-section-heading h4 { margin-bottom: 0; }
+.coverage-section .checkin-section-heading p { margin-top: 5px; }
+.coverage-section .checkin-section-heading p strong { color: #3c5260; font-weight: 650; }
+.coverage-status { flex: 0 0 auto; padding: 6px 9px; border: 1px solid #ead9b3; border-radius: 999px; background: #fffaf0; color: #765d29; font-size: .74rem; font-weight: 680; }
+.coverage-methods { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+.coverage-methods span { padding: 8px 10px; border-radius: 9px; background: #f4f7f8; color: #506471; font-size: .79rem; font-weight: 620; }
 
 .journey-panel, .documents-panel { max-width: 860px; }
 .journey-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
@@ -208,6 +237,9 @@ button:focus-visible, select:focus-visible, a:focus-visible, [data-slot="accordi
   .header-action { height: 34px; padding: 0 7px; font-size: .72rem; }
   .simple-main { padding: 38px 16px 72px; }
   .intro-block { margin-bottom: 24px; }
+  .patient-summary { flex-wrap: wrap; gap: 14px 0; padding: 15px; margin-bottom: 22px; }
+  .patient-summary > div { flex: 1 1 50%; padding: 0 10px; border: 0; }
+  .patient-summary > div:first-child { flex-basis: 100%; padding-left: 10px; }
   .intro-block h1 { font-size: 1.55rem; }
   .primary-grid { grid-template-columns: 1fr; gap: 12px; }
   .next-step-card { min-height: 0; }
@@ -220,6 +252,10 @@ button:focus-visible, select:focus-visible, a:focus-visible, [data-slot="accordi
   .token-separator { width: 1px; height: 48px; margin: 0 14px; }
   .readiness-card { margin-top: 12px; }
   .readiness-card [data-slot="card-content"] { padding: 24px; }
+  .checkin-card [data-slot="card-content"] { padding: 22px 20px; }
+  .checkin-heading { flex-direction: column; gap: 10px; }
+  .checkin-vitals-grid { grid-template-columns: 1fr; gap: 12px; }
+  .coverage-section .checkin-section-heading { align-items: flex-start; flex-direction: column; }
   .ready-facts ul { grid-template-columns: 1fr; }
   .choice-row { flex-direction: column; }
   .choice-row button { width: 100%; text-align: left; }

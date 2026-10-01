@@ -5,6 +5,7 @@ import DocumentVault from "./components/DocumentVault";
 import IndoorMapModal from "./components/IndoorMapModal";
 import SharedDocumentPreviewModal from "./components/SharedDocumentPreviewModal";
 import CaregiverShareModal from "./components/CaregiverShareModal";
+import CheckInChecklist from "./components/CheckInChecklist";
 import SOSModal from "./components/SOSModal";
 import { Button } from "./components/ui/button";
 import { Card, CardContent } from "./components/ui/card";
@@ -25,6 +26,10 @@ const copyByLanguage = {
   en: {
     greeting: (name) => `Good morning, ${name}`,
     tabs: { next: "What's next", journey: "Journey", documents: "Documents" },
+    patientDetails: "Patient details",
+    patientId: "Patient ID",
+    age: "Age",
+    careType: "Visit",
     next: "Your next step",
     goTo: "Go to",
     directions: "How to get there",
@@ -39,7 +44,7 @@ const copyByLanguage = {
     fastingQuestion: "Have you had anything except water in the past 8 hours?",
     fasted: "No, I have fasted",
     ate: "Yes, I ate or drank",
-    fastingReady: "You can continue to the blood test.",
+    fastingReady: "You can continue to the lab test.",
     fastingStop: "Do not go to Diagnostics yet. Ask a staff member what to do next.",
     answerFirst: "Answer the fasting question below before continuing.",
     askStaff: "Ask staff for help",
@@ -59,6 +64,10 @@ const copyByLanguage = {
   hi: {
     greeting: (name) => `नमस्ते, ${name}`,
     tabs: { next: "अगला कदम", journey: "यात्रा", documents: "दस्तावेज़" },
+    patientDetails: "मरीज़ की जानकारी",
+    patientId: "मरीज़ आईडी",
+    age: "उम्र",
+    careType: "भेंट",
     next: "आपका अगला कदम",
     goTo: "जाएँ",
     directions: "वहाँ कैसे पहुँचें",
@@ -73,7 +82,7 @@ const copyByLanguage = {
     fastingQuestion: "क्या आपने पिछले 8 घंटों में पानी के अलावा कुछ खाया या पिया है?",
     fasted: "नहीं, मैं खाली पेट हूँ",
     ate: "हाँ, मैंने खाया या पिया है",
-    fastingReady: "आप रक्त जाँच के लिए जा सकते हैं।",
+    fastingReady: "आप लैब जाँच के लिए जा सकते हैं।",
     fastingStop: "अभी डायग्नोस्टिक्स न जाएँ। आगे क्या करना है, इसके लिए स्टाफ से पूछें।",
     answerFirst: "आगे जाने से पहले उपवास वाले प्रश्न का उत्तर दें।",
     askStaff: "स्टाफ से मदद लें",
@@ -93,6 +102,10 @@ const copyByLanguage = {
   mr: {
     greeting: (name) => `नमस्कार, ${name}`,
     tabs: { next: "पुढील टप्पा", journey: "प्रवास", documents: "कागदपत्रे" },
+    patientDetails: "रुग्णाची माहिती",
+    patientId: "रुग्ण आयडी",
+    age: "वय",
+    careType: "भेट",
     next: "तुमचा पुढील टप्पा",
     goTo: "येथे जा",
     directions: "तिथे कसे जायचे",
@@ -107,7 +120,7 @@ const copyByLanguage = {
     fastingQuestion: "गेल्या 8 तासांत तुम्ही पाण्याव्यतिरिक्त काही खाल्ले किंवा प्यायले आहे का?",
     fasted: "नाही, मी उपाशी आहे",
     ate: "हो, मी खाल्ले किंवा प्यायले",
-    fastingReady: "तुम्ही रक्त तपासणीसाठी जाऊ शकता.",
+    fastingReady: "तुम्ही लॅब तपासणीसाठी जाऊ शकता.",
     fastingStop: "आत्ता डायग्नोस्टिक्सला जाऊ नका. पुढे काय करायचे ते कर्मचाऱ्यांना विचारा.",
     answerFirst: "पुढे जाण्यापूर्वी उपवासाच्या प्रश्नाचे उत्तर द्या.",
     askStaff: "कर्मचाऱ्यांची मदत घ्या",
@@ -128,9 +141,9 @@ const copyByLanguage = {
 
 const stageLabels = {
   "PT-84920": {
-    en: ["Check-in", "Vitals", "Doctor visit", "Blood tests", "Dietitian", "Pharmacy"],
-    hi: ["चेक-इन", "जाँच", "डॉक्टर", "रक्त जाँच", "आहार सलाह", "फार्मेसी"],
-    mr: ["चेक-इन", "तपासणी", "डॉक्टर", "रक्त तपासणी", "आहार सल्ला", "फार्मसी"]
+    en: ["Check-in", "Vitals", "Doctor visit", "Lab tests", "Dietitian", "Pharmacy"],
+    hi: ["चेक-इन", "जाँच", "डॉक्टर", "लैब जाँच", "आहार सलाह", "फार्मेसी"],
+    mr: ["चेक-इन", "तपासणी", "डॉक्टर", "लॅब तपासण्या", "आहार सल्ला", "फार्मसी"]
   },
   "PT-39104": {
     en: ["Registration", "Doctor review", "Pre-medication", "Treatment", "Observation", "Discharge"],
@@ -236,6 +249,13 @@ function PatientApp() {
       <main className="simple-main">
         <div className="intro-block"><h1>{copy.greeting(firstName)}</h1></div>
 
+        <section className="patient-summary" aria-label={copy.patientDetails}>
+          <div className="patient-summary-main"><span>{copy.patientDetails}</span><strong>{patient.name}</strong></div>
+          <div><span>{copy.patientId}</span><strong>{patient.patientId}</strong></div>
+          {patient.age && <div><span>{copy.age}</span><strong>{patient.age}{patient.gender ? ` · ${patient.gender}` : ""}</strong></div>}
+          <div><span>{copy.careType}</span><strong>{patient.careType}</strong></div>
+        </section>
+
         <nav className="visit-tabs" aria-label="Visit sections">
           {Object.entries(copy.tabs).map(([key, label]) => (
             <button key={key} className={activeTab === key ? "active" : ""} onClick={() => setActiveTab(key)} aria-current={activeTab === key ? "page" : undefined}>{label}</button>
@@ -287,6 +307,7 @@ function PatientApp() {
               {fastingResponse === "ate" && <div className="fasting-message warning" role="alert"><p><GoogleIcon name="AlertTriangle" size={20} />{copy.fastingStop}</p><Button variant="outline" onClick={() => setIsSOSOpen(true)}>{copy.askStaff}</Button></div>}
             </fieldset>}
           </CardContent></Card>
+          <CheckInChecklist patient={patient} lang={lang} />
         </section>}
 
         {activeTab === "journey" && <section className="tab-panel journey-panel" aria-label={copy.tabs.journey}>

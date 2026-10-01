@@ -18,6 +18,13 @@ const emptyForm = {
   estimatedWait: 10
 };
 
+function patientReport(value) {
+  if (value === "yes") return "Yes";
+  if (value === "no") return "No";
+  if (value === "unsure") return "Not sure";
+  return "Not reported";
+}
+
 function formForPatient(patient) {
   if (!patient) return emptyForm;
   const location = locationCatalog.find((item) => item.title === patient.nextStep.title) || locationCatalog[0];
@@ -102,6 +109,7 @@ export default function DoctorDashboard() {
           <div><h1>Doctor dashboard</h1><p>{patients.length} patients in today’s working queue</p></div>
           <nav aria-label="Doctor dashboard screens">
             <button className={screen === "queue" ? "active" : ""} onClick={() => setScreen("queue")}>Queue</button>
+            <button className={screen === "check-in" ? "active" : ""} onClick={() => setScreen("check-in")}>Check-in</button>
             <button className={screen === "consult" ? "active" : ""} onClick={() => setScreen("consult")}>Consult</button>
             <button className={screen === "status" ? "active" : ""} onClick={() => setScreen("status")}>Status</button>
           </nav>
@@ -124,6 +132,28 @@ export default function DoctorDashboard() {
                 </tr>
               ))}</tbody>
             </table>
+          </div>
+        </section>}
+
+        {screen === "check-in" && selectedPatient && <section aria-labelledby="check-in-title">
+          <div className="screen-heading status-heading"><div><h2 id="check-in-title">Patient check-in details</h2><p>Patient-reported information for staff review before vitals and consultation.</p></div><label>Patient<select value={selectedPatient.patientId} onChange={(event) => choosePatient(event.target.value, "check-in")}>{patients.map((patient) => <option key={patient.patientId} value={patient.patientId}>{patient.token} · {patient.name}</option>)}</select></label></div>
+          <div className="checkin-review-grid">
+            <section className="checkin-review-panel"><h3>Identity documents</h3><dl>
+              <div><dt>Aadhaar</dt><dd>{selectedPatient.checkIn?.aadhaarReady ? "Ready to show · staff verification pending" : "Not marked ready"}</dd></div>
+              <div><dt>PAN</dt><dd>{selectedPatient.checkIn?.panReady ? "Ready to show · staff verification pending" : "Not marked ready"}</dd></div>
+            </dl><p>Do not record ID numbers in this view. Complete verification at the centre.</p></section>
+            <section className="checkin-review-panel"><h3>Medical history</h3><p>{selectedPatient.checkIn?.medicalHistory || "No patient-reported history entered for this visit."}</p></section>
+            <section className="checkin-review-panel"><h3>Context before vitals</h3><dl>
+              <div><dt>Fasting</dt><dd>{patientReport(selectedPatient.checkIn?.fastingBeforeVitals)}</dd></div>
+              <div><dt>Recent exertion</dt><dd>{patientReport(selectedPatient.checkIn?.recentExertion)}</dd></div>
+              <div><dt>Prior lab test</dt><dd>{selectedPatient.checkIn?.priorTests || "None reported"}</dd></div>
+              <div><dt>OPD rest</dt><dd>{selectedPatient.checkIn?.opdRestMinutes ? `${selectedPatient.checkIn.opdRestMinutes} minutes` : "Not reported"}</dd></div>
+            </dl></section>
+            <section className="checkin-review-panel"><h3>Insurance or scheme</h3><dl>
+              <div><dt>Patient plan</dt><dd>{selectedPatient.insurance.provider}{selectedPatient.insurance.policy ? ` · ${selectedPatient.insurance.policy}` : ""}</dd></div>
+              <div><dt>Centre eligibility</dt><dd>Needs confirmation</dd></div>
+              <div><dt>Cashless / reimbursement</dt><dd>Confirm with the centre and insurer</dd></div>
+            </dl></section>
           </div>
         </section>}
 
